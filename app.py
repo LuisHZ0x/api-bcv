@@ -2,8 +2,11 @@ from flask import Flask, jsonify, request
 import requests
 from bs4 import BeautifulSoup
 import urllib3
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app)
 
 url = "https://www.bcv.org.ve/"
 
