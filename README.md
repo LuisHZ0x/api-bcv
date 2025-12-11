@@ -37,7 +37,7 @@ La API realiza *web scraping* al sitio oficial del BCV para extraer los valores 
     ```bash
     python3 app.py
     ```
-    La aplicación se iniciará en `http://127.0.0.1:5001` (por defecto).
+    La aplicación se iniciará en `http://127.0.0.1:5000` (por defecto).
 
 2.  **Endpoints disponibles**:
 
