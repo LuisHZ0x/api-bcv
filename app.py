@@ -44,7 +44,8 @@ def create_app():
             {
                 "tasa del dolar": "/dolar",
                 "tasa del euro": "/euro",
-                "bancos": "/bancos"
+                "bancos": "/bancos",
+                "buscar banco": "/bancos/<banco_nombre>"
             }
         ],
         "date": date_text
