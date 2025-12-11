@@ -21,9 +21,9 @@ La API realiza *web scraping* al sitio oficial del BCV para extraer los valores 
 
 2.  **Crear un entorno virtual** (recomendado):
     ```bash
-    python3 -m venv venv
-    source venv/bin/activate  # En Linux/Mac
-    # venv\Scripts\activate   # En Windows
+    python3 -m venv .venv
+    user@machine:~/file/routes$. .venv/bin/activate  # En Linux/Mac
+    # .venv\Scripts\activate   # En Windows
     ```
 
 3.  **Instalar las dependencias**:
@@ -37,7 +37,7 @@ La API realiza *web scraping* al sitio oficial del BCV para extraer los valores 
     ```bash
     python3 app.py
     ```
-    La aplicación se iniciará en `http://127.0.0.1:5000` (por defecto).
+    La aplicación se iniciará en `http://127.0.0.1:5001` (por defecto).
 
 2.  **Endpoints disponibles**:
 
@@ -49,10 +49,11 @@ La API realiza *web scraping* al sitio oficial del BCV para extraer los valores 
           "endpoints": [
             {
               "tasa del dolar": "/dolar",
-              "tasa del euro": "/euro"
+              "tasa del euro": "/euro",
+              "bancos": "/bancos",
+              "bancos/:banco_nombre": "/bancos/:banco_nombre"
             }
-          ],
-          "message": "API BCV for private company use 16 systems"
+          ]
         }
         ```
 
@@ -78,10 +79,11 @@ La API realiza *web scraping* al sitio oficial del BCV para extraer los valores 
 
 El código principal se encuentra en `app.py`.
 
-*   **Extracción de datos**: Se utiliza `BeautifulSoup` para analizar el HTML del BCV. Si la estructura de la página del BCV cambia, deberás actualizar los selectores en las funciones `dolar()` y `euro()`.
+*   **Extracción de datos**: Se utiliza `BeautifulSoup` para analizar el HTML del BCV. Si la estructura de la página del BCV cambia, deberás actualizar los selectores en las funciones `dolar()`, `euro()` y `bancos()`.
     *   Actualmente busca `div` con id `dolar` y `euro`.
+    *   Actualmente busca `table` con class `views-table cols-3 table table-0 table-0 table-0 table-0`.
 *   **Nuevas monedas**: Para agregar otra moneda (ej. Yuan), puedes duplicar la función `dolar()` o `euro()`, cambiar la ruta (`@app.route('/yuan')`) y ajustar el ID del elemento HTML que buscas (`soup.find_all("div", id="yuan")`).
-*   **Puerto**: Puedes cambiar el puerto por defecto en la línea `app.run(debug=True, port=5000)`.
+*   **Puerto**: Puedes cambiar el puerto por defecto en la línea `app.run(debug=True, port=5001)`.
 
 ## Notas
 
