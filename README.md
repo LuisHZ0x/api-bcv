@@ -54,6 +54,8 @@ La aplicación se inicia en `http://127.0.0.1:5000`.
 
 Todos los endpoints están bajo el prefijo `/v1`.
 
+URL base: `https://api-bcv-nine.vercel.app`
+
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | `GET` | `/v1` | Fecha del BCV y lista de endpoints |
