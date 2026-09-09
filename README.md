@@ -1,6 +1,6 @@
 # API BCV - Tasas de Cambio
 
-API construida con Flask que obtiene las tasas de cambio del Dólar y el Euro directamente del sitio web del [Banco Central de Venezuela (BCV)](https://www.bcv.org.ve/) mediante web scraping.
+API construida con Flask que obtiene las tasas de cambio del Dólar y Euro directamente del sitio web del [Banco Central de Venezuela (BCV)](https://www.bcv.org.ve/) mediante web scraping, además de la tasa promedio de USDT en Binance P2P.
 
 ## Requisitos
 
@@ -59,6 +59,7 @@ Todos los endpoints están bajo el prefijo `/v1`.
 | `GET` | `/v1` | Fecha del BCV y lista de endpoints |
 | `GET` | `/v1/dolar` | Tasa actual del dólar |
 | `GET` | `/v1/euro` | Tasa actual del euro |
+| `GET` | `/v1/usdt` | Tasa promedio actual de USDT en Binance P2P |
 | `GET` | `/v1/bancos` | Listado de bancos con sus tasas |
 | `GET` | `/v1/bancos/<nombre>` | Tasa de un banco específico |
 
@@ -92,12 +93,14 @@ api-bcv/
 ├── src/
 │   ├── scraper/
 │   │   ├── __init__.py
-│   │   └── bcv_scraper.py       # Scraping y parseo del BCV (con caché)
+│   │   ├── bcv_scraper.py       # Scraping y parseo del BCV (con caché)
+│   │   └── binance_fetcher.py   # Consumo de la API de Binance P2P (con caché)
 │   └── routes/
 │       ├── __init__.py
 │       ├── dolar.py             # Endpoint /dolar
 │       ├── euro.py              # Endpoint /euro
-│       └── bancos.py            # Endpoints /bancos
+│       ├── bancos.py            # Endpoints /bancos
+│       └── usdt.py              # Endpoint /usdt
 ├── .env.example
 ├── requirements.txt
 └── vercel.json                  # Configuración para deploy en Vercel
@@ -106,6 +109,8 @@ api-bcv/
 ### Arquitectura
 
 La lógica de scraping está centralizada en `BCVScraper` (`src/scraper/bcv_scraper.py`). Es el **único módulo** que hace requests HTTP al BCV y parsea HTML. Las rutas solo consumen datos del scraper y arman respuestas JSON.
+
+Para obtener la tasa de USDT, se consume la API de Binance P2P mediante `BinanceFetcher` (`src/scraper/binance_fetcher.py`).
 
 El scraper incluye un **caché en memoria con TTL** configurable. Una vez que se hace el primer request al BCV, las siguientes peticiones a cualquier endpoint devuelven datos cacheados hasta que expire el TTL.
 
