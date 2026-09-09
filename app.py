@@ -1,11 +1,11 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, redirect
 from flask_cors import CORS
 from requests import RequestException
 
-from src.routes import bp_bancos, bp_dolar, bp_euro
+from src.routes import bp_bancos, bp_dolar, bp_euro, bp_usdt
 from src.scraper import BCVScraper
 
 load_dotenv()
@@ -19,6 +19,11 @@ def create_app():
     app.register_blueprint(bp_dolar, url_prefix="/v1")
     app.register_blueprint(bp_euro, url_prefix="/v1")
     app.register_blueprint(bp_bancos, url_prefix="/v1")
+    app.register_blueprint(bp_usdt, url_prefix="/v1")
+
+    @app.route("/", methods=["GET"])
+    def redirect_to_v1():
+        return redirect("/v1", code=301)
 
     @app.route("/v1", methods=["GET"])
     def index():
@@ -34,6 +39,7 @@ def create_app():
                 {
                     "tasa del dolar": "/dolar",
                     "tasa del euro": "/euro",
+                    "tasa del usdt (binance)": "/usdt",
                     "bancos": "/bancos",
                     "buscar banco": "/bancos/<banco_nombre>",
                 }
